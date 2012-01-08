@@ -1,0 +1,13 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: wp_test
+  username: postgres
+  pool: 5
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: wp_development
+  username: postgres
+  pool: 5

@@ -4,7 +4,7 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-WebinarPlaner::Application.load_tasks
+ShareMan::Application.load_tasks
 Dir.glob('app/tasks/*.rake').each { |r| import r }
 
 task(:default).clear

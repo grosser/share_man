@@ -52,30 +52,63 @@ describe CompaniesController do
       flash[:alert].should_not be_blank
     end
 
-    it "saves nested series" do
-      lambda{
-        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1'}}}
-      }.should change{ company.series.count }.by(+1)
+    context "series" do
+      it "saves nested series" do
+        lambda{
+          put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1'}}}
+        }.should change{ company.series.count }.by(+1)
+      end
+
+      it "does not create duplicate series" do
+        series = Factory(:series, :company => company)
+        lambda{
+          put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id}}}
+        }.should_not change{ company.series.count }
+      end
+
+      it "does not care about series without names" do
+        lambda{
+          put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => ''}}}
+        }.should_not change{ company.series.count }
+      end
+
+      it "destroys series" do
+        series = Factory(:series, :company => company)
+        lambda{
+          put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id, :_destroy => true}}}
+        }.should change{ company.series.count }.by(-1)
+      end
     end
 
-    it "does not create duplicate series" do
-      series = Factory(:series, :company => company)
-      lambda{
-        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id}}}
-      }.should_not change{ company.series.count }
-    end
+    context "company_shares" do
+      let(:series){ Factory(:series, :company => company) }
+      let(:company_share){ Factory(:company_share, :company => company, :series => series) }
 
-    it "does not care about series without names" do
-      lambda{
-        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => ''}}}
-      }.should_not change{ company.series.count }
-    end
+      it "saves nested company_shares" do
+        lambda{
+          put :update, :id => company.to_param, :company => {:company_shares_attributes => {'0' => {:shareholder_name => 'Foo', :number => '1', :series_id => series.id}}}
+        }.should change{ company.company_shares.count }.by(+1)
+      end
 
-    it "destroys series" do
-      series = Factory(:series, :company => company)
-      lambda{
-        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id, :_destroy => true}}}
-      }.should change{ company.series.count }.by(-1)
+      it "does not create duplicate company_shares" do
+        company_share
+        lambda{
+          put :update, :id => company.to_param, :company => {:company_shares_attributes => {'0' => {:shareholder_name => 'Foo', :number => '1', :series_id => series.id, :id => company_share.id}}}
+        }.should_not change{ company.company_shares.count }
+      end
+
+      it "does not care about company_shares without shareholder names" do
+        lambda{
+          put :update, :id => company.to_param, :company => {:company_shares_attributes => {'0' => {:shareholder_name => '', :number => '1', :series_id => series.id}}}
+        }.should_not change{ company.company_shares.count }
+      end
+
+      it "destroys company_shares" do
+        company_share
+        lambda{
+          put :update, :id => company.to_param, :company => {:company_shares_attributes => {'0' => {:shareholder_name => 'Foo', :number => '1', :series_id => series.id, :id => company_share.id, :_destroy => true}}}
+        }.should change{ company.company_shares.count }.by(-1)
+      end
     end
   end
 end

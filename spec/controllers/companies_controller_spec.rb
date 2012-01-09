@@ -58,10 +58,24 @@ describe CompaniesController do
       }.should change{ company.series.count }.by(+1)
     end
 
+    it "does not create duplicate series" do
+      series = Factory(:series, :company => company)
+      lambda{
+        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id}}}
+      }.should_not change{ company.series.count }
+    end
+
     it "does not care about series without names" do
       lambda{
         put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => ''}}}
       }.should_not change{ company.series.count }
+    end
+
+    it "destroys series" do
+      series = Factory(:series, :company => company)
+      lambda{
+        put :update, :id => company.to_param, :company => {:series_attributes => {'0' => {:name => 'Foo', :liquidation_order => '1', :id => series.id, :_destroy => true}}}
+      }.should change{ company.series.count }.by(-1)
     end
   end
 end

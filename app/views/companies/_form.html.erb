@@ -7,6 +7,7 @@
       <td>Liquidation order</td>
       <td>Participation</td>
       <td>Participation cap</td>
+      <td></td>
     </tr>
     <%= f.fields_for :series, @company.series do |csf| %>
       <tr>
@@ -15,6 +16,7 @@
         <td><%= csf.text_field :liquidation_order, :style => 'width:20px' %></td>
         <td><%= csf.check_box :participation %></td>
         <td><%= csf.text_field :participation_cap, :style => 'width:50px' %></td>
+        <td><%= csf.check_box :_destroy %> Delete</td>
       </tr>
     <% end %>
   </table>

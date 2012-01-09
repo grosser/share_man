@@ -1,6 +1,19 @@
+<table>
+  <% @company.series.each do |series| %>
+    <tr>
+      <td><%= link_to series.name, [@company, series] %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td>
+      <%= render 'series/form' %>
+    </td>
+  </tr>
+</table>
+
+
 <%= form_for @company do |f| %>
   <%= form_input_row f, :name %>
-  <%= @company.company_shares.size %>
   <table>
     <%= f.fields_for @company.company_shares do |csf| %>
       <%= form_input_row csf, :number %>

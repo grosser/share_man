@@ -19,11 +19,14 @@ ActiveRecord::Schema.define(:version => 20120108234357) do
     t.datetime "updated_at"
   end
 
+  add_index "companies", ["name"], :name => "index_companies_on_name", :unique => true
+
   create_table "company_shares", :force => true do |t|
-    t.integer  "number",       :null => false
+    t.string   "shareholder_name"
+    t.integer  "number",           :null => false
     t.date     "purchased_on"
-    t.integer  "company_id",   :null => false
-    t.integer  "series_id",    :null => false
+    t.integer  "company_id",       :null => false
+    t.integer  "series_id",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,9 +77,13 @@ ActiveRecord::Schema.define(:version => 20120108234357) do
     t.string  "name",                                                                          :null => false
     t.decimal "liquidation_amount_per_share", :precision => 7, :scale => 5
     t.integer "liquidation_order",                                                             :null => false
+    t.integer "company_id",                                                                    :null => false
     t.boolean "participation",                                              :default => false, :null => false
     t.decimal "participation_cap",            :precision => 7, :scale => 5
   end
+
+  add_index "series", ["company_id", "liquidation_order"], :name => "index_series_on_company_id_and_liquidation_order", :unique => true
+  add_index "series", ["company_id", "name"], :name => "index_series_on_company_id_and_name", :unique => true
 
   create_table "trainings", :force => true do |t|
     t.string   "title"

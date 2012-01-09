@@ -1,0 +1,10 @@
+<%= form_for @company do |f| %>
+  <%= form_input_row f, :name %>
+  <%= @company.company_shares.size %>
+  <table>
+    <%= f.fields_for @company.company_shares do |csf| %>
+      <%= form_input_row csf, :number %>
+      <%= form_input_row csf, :purchased_on %>
+    <% end %>
+  </table>
+<% end %>

@@ -1,0 +1,7 @@
+<table>
+  <% @companies.each do |company| %>
+    <tr>
+      <td><%= link_to company.name, company %></td>
+    </tr>
+  <% end %>
+</table>

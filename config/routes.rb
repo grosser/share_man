@@ -1,26 +1,8 @@
 ShareMan::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  root :to => 'home#index'
-  match 'home(/:action(/:id(.:format)))', :controller => :home
-
-  #   match 'products/:id' => 'catalog#view'
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+  root :to => 'companies#index'
+  resources :companies
 
   # Sample resource route with sub-resources:
   #   resources :products do

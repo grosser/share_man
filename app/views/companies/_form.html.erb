@@ -9,6 +9,7 @@
       <td>Participation cap</td>
       <td></td>
     </tr>
+
     <%= f.fields_for :series, @company.series do |csf| %>
       <tr>
         <td><%= csf.text_field :name, :style => 'width:100px' %></td>
@@ -20,7 +21,6 @@
       </tr>
     <% end %>
   </table>
-  <%= link_to 'New Series', new_company_series_path(@company) %>
 
   <h2>Shares</h2>
   <%= form_input_row f, :name %>

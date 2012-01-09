@@ -31,48 +31,6 @@ ActiveRecord::Schema.define(:version => 20120108234357) do
     t.datetime "updated_at"
   end
 
-  create_table "memberships", :force => true do |t|
-    t.integer  "person_id",       :null => false
-    t.integer  "organisation_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "memberships", ["person_id", "organisation_id"], :name => "index_memberships_on_person_id_and_organisation_id", :unique => true
-
-  create_table "organisations", :force => true do |t|
-    t.string   "website"
-    t.string   "address"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "participations", :force => true do |t|
-    t.integer  "person_id",   :null => false
-    t.integer  "training_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "participations", ["person_id", "training_id"], :name => "index_participations_on_person_id_and_webinar_id", :unique => true
-
-  create_table "people", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "address"
-    t.string   "email",                                      :null => false
-    t.boolean  "verified_for_training",   :default => false, :null => false
-    t.boolean  "participated_in_webinar", :default => false, :null => false
-    t.boolean  "received_login",          :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "reason_to_participate"
-    t.boolean  "receive_emails",          :default => true,  :null => false
-  end
-
-  add_index "people", ["email"], :name => "index_people_on_email", :unique => true
-
   create_table "series", :force => true do |t|
     t.string  "name",                                                                          :null => false
     t.decimal "liquidation_amount_per_share", :precision => 7, :scale => 5
@@ -84,13 +42,5 @@ ActiveRecord::Schema.define(:version => 20120108234357) do
 
   add_index "series", ["company_id", "liquidation_order"], :name => "index_series_on_company_id_and_liquidation_order", :unique => true
   add_index "series", ["company_id", "name"], :name => "index_series_on_company_id_and_name", :unique => true
-
-  create_table "trainings", :force => true do |t|
-    t.string   "title"
-    t.text     "description"
-    t.datetime "start"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end

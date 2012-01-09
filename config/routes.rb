@@ -2,7 +2,9 @@ ShareMan::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   root :to => 'companies#index'
-  resources :companies
+  resources :companies do
+    resources :series
+  end
 
   # Sample resource route with sub-resources:
   #   resources :products do

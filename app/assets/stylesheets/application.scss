@@ -8,3 +8,7 @@
 
 /* get all mixin and variables */
 @import "bootstrap";
+
+.field_with_errors input, .field_with_errors select{
+  background-color: #e9967a;
+}

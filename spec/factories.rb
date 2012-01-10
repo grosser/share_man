@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :company do |f|
-    f.name 'FuuBar'
+    f.name{ "FuuBar #{rand 99999999}" }
   end
 
   factory :series do |f|
-    f.name 'FuuBar'
-    f.liquidation_order 1
+    f.name{ "FuuBar #{rand 9999999999}" }
+    f.liquidation_order{ rand 999999 }
     f.association :company
   end
 

@@ -32,12 +32,12 @@ ActiveRecord::Schema.define(:version => 20120108234357) do
   end
 
   create_table "series", :force => true do |t|
-    t.string  "name",                                                                          :null => false
-    t.decimal "liquidation_amount_per_share", :precision => 7, :scale => 5
-    t.integer "liquidation_order",                                                             :null => false
-    t.integer "company_id",                                                                    :null => false
-    t.boolean "participation",                                              :default => false, :null => false
-    t.decimal "participation_cap",            :precision => 7, :scale => 5
+    t.string  "name",                                                                           :null => false
+    t.decimal "liquidation_amount_per_share", :precision => 12, :scale => 7
+    t.integer "liquidation_order",                                                              :null => false
+    t.integer "company_id",                                                                     :null => false
+    t.boolean "participation",                                               :default => false, :null => false
+    t.decimal "participation_cap",            :precision => 12, :scale => 7
   end
 
   add_index "series", ["company_id", "liquidation_order"], :name => "index_series_on_company_id_and_liquidation_order", :unique => true

@@ -1,4 +1,6 @@
 <%= form_for @company do |f| %>
+  <%= form_input_row f, :name %>
+
   <h2>Series</h2>
   <table style="width: auto">
     <tr>
@@ -23,12 +25,23 @@
   </table>
 
   <h2>Shares</h2>
-  <%= form_input_row f, :name %>
-  <table>
-    <%#= f.fields_for @company.company_shares do |csf| %>
-      <%#= form_input_row csf, :number %>
-      <%#= form_input_row csf, :purchased_on %>
-    <%# end %>
+  <table style="width: auto">
+    <tr>
+      <td>Shareholder</td>
+      <td>Number</td>
+      <td>Purchased on</td>
+      <td>Series</td>
+      <td></td>
+    </tr>
+    <%= f.fields_for :company_shares, @company.company_shares do |csf| %>
+      <tr>
+        <td><%= csf.text_field :shareholder_name, :style => 'width: 100px' %></td>
+        <td><%= csf.text_field :number, :style => 'width: 40px' %></td>
+        <td><%= csf.text_field :purchased_on, :placeholder => 'yyyy-mm-dd', :style => 'width: 80px' %></td>
+        <td><%= csf.select :series_id, @company.series.reject(&:new_record?).map{|s| [s.name, s.id] } %></td>
+        <td><%= csf.check_box :_destroy %> Delete</td>
+      </tr>
+    <% end %>
   </table>
   <%= form_button f %>
 <% end %>

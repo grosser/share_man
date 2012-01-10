@@ -6,6 +6,7 @@ class CompaniesController < ApplicationController
   def show
     @company = Company.find params[:id].to_i
     5.times{ @company.series.build }
+    5.times{ @company.company_shares.build }
     render 'edit'
   end
 

@@ -33,8 +33,9 @@ describe "Company management" do
     visit "/companies/#{company.to_param}"
     fill_in 'company[company_shares_attributes][0][shareholder_name]', :with => 'Stakeholder A'
     fill_in 'company[company_shares_attributes][0][number]', :with => '10'
-    fill_in 'company[company_shares_attributes][0][purchased_on]', :with => '2011-01-01'
-    choose series.name, :from => 'company[company_shares_attributes][0][series_id]'
+    fill_in 'company[company_shares_attributes][1][shareholder_name]', :with => 'Stakeholder B'
+    fill_in 'company[company_shares_attributes][1][number]', :with => '10'
+    select series.name, :from => 'company[company_shares_attributes][0][series_id]'
 
     lambda{
       click_button 'Save'

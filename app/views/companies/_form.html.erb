@@ -1,47 +1,57 @@
 <%= form_for @company do |f| %>
   <%= form_input_row f, :name %>
 
-  <h2>Series</h2>
-  <table style="width: auto">
-    <tr>
-      <td>Name</td>
-      <td>Liquidation per share</td>
-      <td>Liquidation order</td>
-      <td>Participation</td>
-      <td>Participation cap</td>
-      <td></td>
-    </tr>
-
-    <%= f.fields_for :series, @company.series do |csf| %>
+  <% unless @company.new_record? %>
+    <h2>Series</h2>
+    <table style="width: auto">
       <tr>
-        <td><%= csf.text_field :name, :style => 'width:100px' %></td>
-        <td><%= csf.text_field :liquidation_amount_per_share, :style => 'width:50px' %></td>
-        <td><%= csf.text_field :liquidation_order, :style => 'width:20px' %></td>
-        <td><%= csf.check_box :participation %></td>
-        <td><%= csf.text_field :participation_cap, :style => 'width:50px' %></td>
-        <td><%= csf.check_box :_destroy %> Delete</td>
+        <td>Name</td>
+        <td>Liquidation per share</td>
+        <td>Liquidation order</td>
+        <td>Participation</td>
+        <td>Participation cap</td>
+        <td></td>
       </tr>
-    <% end %>
-  </table>
 
-  <h2>Shares</h2>
-  <table style="width: auto">
-    <tr>
-      <td>Shareholder</td>
-      <td>Number</td>
-      <td>Purchased on</td>
-      <td>Series</td>
-      <td></td>
-    </tr>
-    <%= f.fields_for :company_shares, @company.company_shares do |csf| %>
-      <tr>
-        <td><%= csf.text_field :shareholder_name, :style => 'width: 100px' %></td>
-        <td><%= csf.text_field :number, :style => 'width: 40px' %></td>
-        <td><%= csf.text_field :purchased_on, :placeholder => 'yyyy-mm-dd', :style => 'width: 80px' %></td>
-        <td><%= csf.select :series_id, @company.series.reject(&:new_record?).map{|s| [s.name, s.id] } %></td>
-        <td><%= csf.check_box :_destroy %> Delete</td>
-      </tr>
+      <%= f.fields_for :series, @company.series do |csf| %>
+        <tr>
+          <td><%= csf.text_field :name, :style => 'width:100px' %></td>
+          <td><%= csf.text_field :liquidation_amount_per_share, :style => 'width:50px' %></td>
+          <td><%= csf.text_field :liquidation_order, :style => 'width:20px' %></td>
+          <td><%= csf.check_box :participation %></td>
+          <td><%= csf.text_field :participation_cap, :style => 'width:50px' %></td>
+          <td><%= csf.check_box :_destroy %> Delete</td>
+        </tr>
+      <% end %>
+    </table>
+
+    <h2>Shares</h2>
+    <% persisted_series = @company.series.reject(&:new_record?) %>
+    <% if persisted_series.present? %>
+      <table style="width: auto">
+        <tr>
+          <td>Shareholder</td>
+          <td>Number</td>
+          <td>Purchased on</td>
+          <td>Series</td>
+          <td></td>
+        </tr>
+        <%= f.fields_for :company_shares, @company.company_shares do |csf| %>
+          <tr>
+            <td><%= csf.text_field :shareholder_name, :style => 'width: 100px' %></td>
+            <td><%= csf.text_field :number, :style => 'width: 40px' %></td>
+            <td><%= csf.text_field :purchased_on, :placeholder => 'yyyy-mm-dd', :style => 'width: 80px' %></td>
+            <td><%= csf.select :series_id, persisted_series.map{|s| [s.name, s.id] } %></td>
+            <td><%= csf.check_box :_destroy %> Delete</td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      Add at least 1 series to add shares.
     <% end %>
-  </table>
+  <% end %>
+
+  <br/>
+  <br/>
   <%= form_button f %>
 <% end %>

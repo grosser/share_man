@@ -1,3 +1,5 @@
+[Demo](http://share-man.herokuapp.com/)
+
     cp config/database.example.yml config/database.yml
 
 # TODO
